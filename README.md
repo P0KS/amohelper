@@ -1,2 +1,2 @@
 # amohelper
-Tool in .NET framework to help AMO fill forms for transport Canada
+Tool in AngularJS to help AMO fill forms for transport Canada
