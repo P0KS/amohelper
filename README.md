@@ -1,2 +1,2 @@
 # amohelper
-Tool in AngularJS to help AMO fill forms for transport Canada
+Tool in Yii framework to help AMO fill forms for transport Canada
