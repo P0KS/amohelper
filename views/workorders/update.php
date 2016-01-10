@@ -7,7 +7,6 @@ use yii\helpers\Html;
 
 $this->title = 'Update work order: ' . ' ' . $model->number;
 $this->params['breadcrumbs'][] = ['label' => 'Work orders', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->number, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="work-order-update">

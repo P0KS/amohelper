@@ -34,16 +34,21 @@ $nullableBoolOptions = array('1' => 'Yes', '2' => 'No', '' => 'N/A');
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'total_time')->textInput() ?>
+                        <?= $form->field($model, 'aircraft_part_type')->textInput() ?>
                     </div>
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'total_cycles')->textInput() ?>
-                    </div>
+                        <?= $form->field($model, 'total_time')->textInput() ?>
+                    </div>                    
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'engine_tt')->textInput() ?>
+                        <?= $form->field($model, 'total_cycles')->textInput() ?>
                     </div>
+                    <div class="col-lg-6">
+                        <?= $form->field($model, 'engine_tt')->textInput() ?>
+                    </div>                    
+                </div>
+                <div class="row">
                     <div class="col-lg-6">
                         <?= $form->field($model, 'propeller_tt')->textInput() ?>
                     </div>
@@ -59,7 +64,7 @@ $nullableBoolOptions = array('1' => 'Yes', '2' => 'No', '' => 'N/A');
                 <div class="panel-heading"><strong>Work cards</strong></div>
                 <div class="panel-body">
                     <p>
-                        <?= Html::a('Create a work card', ['workcards/create', 'word_order_id' => $model->id], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a('Create a work card', ['workcards/create', 'work_order_id' => $model->id], ['class' => 'btn btn-success']) ?>
                     </p>
                     <?= GridView::widget([
                         'dataProvider' => $workCardsDataProvider,

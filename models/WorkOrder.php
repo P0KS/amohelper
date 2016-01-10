@@ -48,7 +48,7 @@ class WorkOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['registration', 'serial_number',  'logbook_discepancys',  'aca_number'], 'required'],
+            [['registration', 'serial_number', 'aircraft_part_type',  'logbook_discepancys',  'aca_number'], 'required'],
             [['date', 'number', 'accomplishement_verification_date', 'manuals_note', 'manuals_field','logbook_discepancys_note', 'paper_work_completed_notes', 'independent_checks_accomplished_notes', 'modification_report_completed_notes' ], 'safe'],
             [['logbook_discepancys', 'paper_work_completed', 'independent_checks_accomplished', 'modification_report_completed', 'aca_number'], 'integer'],
             [['logbook_discepancys_note'], 'string'],
@@ -67,8 +67,9 @@ class WorkOrder extends \yii\db\ActiveRecord
             'id' => 'Id', //automatic
             'date' => 'Date', //automatic
             'number' => 'Work order number',//automatic
-            'registration' => 'Registration or P/N',
+            'registration' => 'A/C registration or P/N',
             'serial_number' => 'S/N',
+            'aircraft_part_type' => 'A/C or part type',
             'total_time' => 'Total time',
             'total_cycles' => 'Total cycles',
             'engine_tt' => 'Engine TT',
@@ -80,7 +81,7 @@ class WorkOrder extends \yii\db\ActiveRecord
             'paper_work_completed_notes' => 'Notes',
             'independent_checks_accomplished' => 'All required independent checks accomplished',
             'independent_checks_accomplished_notes' => 'Notes',
-            'modification_report_completed' => 'All required major repair or modification report Completed',
+            'modification_report_completed' => 'All required major repair or modification report completed',
             'modification_report_completed_notes' => 'Notes',
             'aca_number' => 'ACA #',
             'accomplishement_verification_date' => 'Work order accomplishement verification date',
