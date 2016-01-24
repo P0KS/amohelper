@@ -48,12 +48,12 @@ class WorkOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['registration', 'serial_number', 'aircraft_part_type',  'logbook_discepancys',  'aca_number'], 'required'],
+            [['aircraft_id',  'logbook_discepancys', 'paper_work_completed', 'independent_checks_accomplished', 'modification_report_completed',  'aca_number'], 'required'],
             [['date', 'number', 'accomplishement_verification_date', 'manuals_note', 'manuals_field','logbook_discepancys_note', 'paper_work_completed_notes', 'independent_checks_accomplished_notes', 'modification_report_completed_notes' ], 'safe'],
             [['logbook_discepancys', 'paper_work_completed', 'independent_checks_accomplished', 'modification_report_completed', 'aca_number'], 'integer'],
             [['logbook_discepancys_note'], 'string'],
             [['number', 'manuals_note', 'paper_work_completed_notes', 'independent_checks_accomplished_notes', 'modification_report_completed_notes'], 'string', 'max' => 255],
-            [['serial_number','registration', 'total_time', 'total_cycles', 'engine_tt', 'propeller_tt'], 'string', 'max' => 50],
+            [['total_time', 'total_cycles', 'engine_tt', 'propeller_tt'], 'string', 'max' => 50],
             [['accomplishement_verification_date'], 'date', 'format' => 'yyyy-M-d'],
         ];
     }
@@ -67,9 +67,7 @@ class WorkOrder extends \yii\db\ActiveRecord
             'id' => 'Id', //automatic
             'date' => 'Date', //automatic
             'number' => 'Work order number',//automatic
-            'registration' => 'A/C registration or P/N',
-            'serial_number' => 'S/N',
-            'aircraft_part_type' => 'A/C or part type',
+            'aircraft_id' => 'Aircraft',
             'total_time' => 'Total time',
             'total_cycles' => 'Total cycles',
             'engine_tt' => 'Engine TT',
@@ -113,5 +111,13 @@ class WorkOrder extends \yii\db\ActiveRecord
     public function getWorkOrdersManuals()
     {
         return $this->hasMany(WorkOrderManual::className(), ['work_orders_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAircraft()
+    {
+        return $this->hasOne(Aircraft::className(), ['id' => 'aircraft_id']);
     }
 }

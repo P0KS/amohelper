@@ -5,9 +5,12 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'gii'],
     'language' => 'en-US',
     'sourceLanguage' => 'en-US',
+    'modules' => [
+        'gii' => 'yii\gii\Module',
+    ],
     'components' => [
         'request' => [
             'cookieValidationKey' => 'aslkjfjkasjklfaoibsoiaknglk',
@@ -39,6 +42,13 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'js'=>[]
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

@@ -50,7 +50,7 @@ class WorkOrderSearch extends WorkOrder
      */
     public function search($params)
     {
-        $query = WorkOrder::find();
+        $query = WorkOrder::find()->with('aircraft');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -74,9 +74,7 @@ class WorkOrderSearch extends WorkOrder
             'accomplishement_verification_date' => $this->search_field,
         ]);
 
-        $query->andFilterWhere(['like', 'number', $this->search_field])
-            ->andFilterWhere(['like', 'registration', $this->search_field])
-            ->andFilterWhere(['like', 'serial_number', $this->search_field])
+        $query->andFilterWhere(['like', 'number', $this->search_field])            
             ->andFilterWhere(['like', 'manuals_note', $this->search_field])
             ->andFilterWhere(['like', 'logbook_discepancys_note', $this->search_field])
             ->andFilterWhere(['like', 'paper_work_completed_notes', $this->search_field])

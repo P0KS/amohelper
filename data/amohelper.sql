@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2015 at 05:12 AM
+-- Generation Time: Jan 24, 2016 at 08:55 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `amohelper`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `aircraft`
+--
+
+CREATE TABLE IF NOT EXISTS `aircraft` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(50) NOT NULL,
+  `serial_number` varchar(255) NOT NULL,
+  `registration` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -53,10 +67,8 @@ CREATE TABLE IF NOT EXISTS `work_cards` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `work_order_id` int(11) unsigned NOT NULL,
   `number` int(11) NOT NULL,
-  `aircraft_part_type` varchar(250) NOT NULL,
   `originator` varchar(2) NOT NULL,
   `date` date NOT NULL,
-  `title` varchar(255) NOT NULL COMMENT '(to display in work orders discrepancies))',
   `discrepancy` text NOT NULL,
   `rectification` text NOT NULL,
   `independent_check_required` tinyint(1) NOT NULL,
@@ -76,8 +88,7 @@ CREATE TABLE IF NOT EXISTS `work_orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `number` varchar(255) NOT NULL,
-  `registration` varchar(50) NOT NULL,
-  `serial_number` varchar(50) NOT NULL,
+  `aircraft_id` int(11) unsigned NOT NULL,
   `total_time` varchar(50) DEFAULT NULL,
   `total_cycles` varchar(50) DEFAULT NULL,
   `engine_tt` varchar(50) DEFAULT NULL,
@@ -92,9 +103,10 @@ CREATE TABLE IF NOT EXISTS `work_orders` (
   `modification_report_completed` tinyint(1) DEFAULT NULL,
   `modification_report_completed_notes` varchar(255) NOT NULL,
   `aca_number` int(11) NOT NULL,
-  `accomplishement_verification_date` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `accomplishement_verification_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `aircraft_id` (`aircraft_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -118,6 +130,12 @@ CREATE TABLE IF NOT EXISTS `work_orders_manuals` (
 --
 ALTER TABLE `work_cards`
   ADD CONSTRAINT `work_cards_ibfk_1` FOREIGN KEY (`work_order_id`) REFERENCES `work_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `work_orders`
+--
+ALTER TABLE `work_orders`
+  ADD CONSTRAINT `work_orders_ibfk_1` FOREIGN KEY (`aircraft_id`) REFERENCES `aircraft` (`id`);
 
 --
 -- Constraints for table `work_orders_manuals`

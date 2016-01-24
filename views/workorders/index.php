@@ -24,8 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'number',
-            'registration',
-            'serial_number',
+            'aircraft.registration',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete} {export}',
@@ -51,4 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <?= Html::a('Edit aircraft', ['aircraft/index'], ['class' => 'btn btn-success']) ?>
+    </div>
 </div>

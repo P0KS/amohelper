@@ -3,22 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\components\BaseController;
-use app\models\WorkOrder;
-use app\models\WorkCard;
 use app\models\Aircraft;
-use app\models\WorkOrderSearch;
-use app\models\Manual;
-use yii\data\ActiveDataProvider;
+use app\models\AircraftSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 
 /**
- * WorkOrdersController implements the CRUD actions for WorkOrder model.
+ * AircraftController implements the CRUD actions for Aircraft model.
  */
-class WorkOrdersController extends BaseController
+class AircraftController extends Controller
 {
     public function behaviors()
     {
@@ -29,28 +23,16 @@ class WorkOrdersController extends BaseController
                     'delete' => ['post'],
                 ],
             ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'only' => ['create', 'update', 'index', 'delete'],
-                'rules' => [
-                    // allow authenticated users
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    // everything else is denied
-                ],
-            ],
         ];
     }
 
     /**
-     * Lists all WorkOrder models.
+     * Lists all Aircraft models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new WorkOrderSearch();
+        $searchModel = new AircraftSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,31 +42,25 @@ class WorkOrdersController extends BaseController
     }
 
     /**
-     * Creates a new WorkOrder model.
+     * Creates a new Aircraft model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new WorkOrder();
-
-        $manualsModel = Manual::find()->orderBy('order ASC')->all();
-        
-        $aircraftModel = Aircraft::find()->orderBy('registration ASC')->all();
+        $model = new Aircraft();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'manualsModel' => $manualsModel,
-                'aircraftModel' => $aircraftModel
             ]);
         }
     }
 
     /**
-     * Updates an existing WorkOrder model.
+     * Updates an existing Aircraft model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -93,23 +69,17 @@ class WorkOrdersController extends BaseController
     {
         $model = $this->findModel($id);
 
-        $manualsModel = Manual::find()->orderBy('order ASC')->all();
-
-        $aircraftModel = Aircraft::find()->orderBy('registration ASC')->all();  
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'manualsModel' => $manualsModel,
-                'aircraftModel' => $aircraftModel
             ]);
         }
     }
 
     /**
-     * Deletes an existing WorkOrder model.
+     * Deletes an existing Aircraft model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -122,15 +92,15 @@ class WorkOrdersController extends BaseController
     }
 
     /**
-     * Finds the WorkOrder model based on its primary key value.
+     * Finds the Aircraft model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return WorkOrder the loaded model
+     * @return Aircraft the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = WorkOrder::findOne($id)) !== null) {
+        if (($model = Aircraft::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

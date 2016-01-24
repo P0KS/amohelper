@@ -25,8 +25,10 @@ AppAsset::register($this);
         }
     </style>
     <link rel="stylesheet" href="<?= Yii::$app->getUrlManager()->baseUrl ?>/libs/datetimepicker/jquery.datetimepicker.css">
+    <script src="<?= Yii::$app->getUrlManager()->baseUrl ?>/libs/jquery/jquery-1.12.0.min.js"></script>
+    <script src="<?= Yii::$app->getUrlManager()->baseUrl ?>/libs/angularjs/angular.min.js"></script>
 </head>
-<body>
+<body ng-app="AmoHelperApp">
 
 <?php $this->beginBody() ?>
     <div class="wrap">
@@ -68,6 +70,7 @@ AppAsset::register($this);
 <?php $this->endBody() ?>
 <script src="<?= Yii::$app->getUrlManager()->baseUrl ?>/libs/datetimepicker/jquery.datetimepicker.js"></script>
 <script src="<?= Yii::$app->getUrlManager()->baseUrl ?>/scripts/amohelper.common.js"></script>
+<script src="<?= Yii::$app->getUrlManager()->baseUrl ?>/scripts/amohelper.workcards.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

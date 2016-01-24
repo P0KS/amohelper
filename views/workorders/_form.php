@@ -26,16 +26,12 @@ $nullableBoolOptions = array('1' => 'Yes', '2' => 'No', '' => 'N/A');
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'registration')->textInput(['maxlength' => 50]) ?>
-                    </div>
-                    <div class="col-lg-6">
-                        <?= $form->field($model, 'serial_number')->textInput() ?>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <?= $form->field($model, 'aircraft_part_type')->textInput() ?>
-                    </div>
+                        <?php $options = \yii\helpers\ArrayHelper::map($aircraftModel, 'id', 'registration'); ?>
+                        <?= $form->field($model, 'aircraft_id')->dropDownList(
+                            $options,           // Flat array ('id'=>'label')
+                            ['prompt'=>'']    // options
+                        ); ?>
+                    </div>  
                     <div class="col-lg-6">
                         <?= $form->field($model, 'total_time')->textInput() ?>
                     </div>                    
@@ -56,28 +52,74 @@ $nullableBoolOptions = array('1' => 'Yes', '2' => 'No', '' => 'N/A');
             </div>
         </div>
     </div>
-    <div class="row">
-        <?php if($model->isNewRecord) : ?>
-        <div class="alert alert-info" role="alert">Discrepencies (work cards) will be added later on when the work order is created!</div>
-        <?php elseif(isset($workCardsDataProvider)) : ?>
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>Work cards</strong></div>
-                <div class="panel-body">
-                    <p>
-                        <?= Html::a('Create a work card', ['workcards/create', 'work_order_id' => $model->id], ['class' => 'btn btn-success']) ?>
-                    </p>
-                    <?= GridView::widget([
-                        'dataProvider' => $workCardsDataProvider,
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            'title',
-                            'number',
-                            ['class' => 'yii\grid\ActionColumn'],
-                        ],
-                    ]); ?>
+    <div class="row">        
+        <div class="panel panel-default" ng-controller="WorkCardsController" ng-init="init()">
+            <div class="panel-heading"><strong>Work cards</strong></div>
+            <div class="panel-body">
+                <div class="row form-group">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" ng-model="currentDiscrepancy" placeholder="Discrepancy" />
+                    </div>
                 </div>
+                <div class="row form-group">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" ng-model="currentRectification" placeholder="Rectification" />
+                    </div>                    
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-4">
+                        <label>
+                            <input type="checkbox" ng-model="currentIndependentCheck" />
+                            Independent check required
+                        </label>
+                    </div>
+                    <div class="col-xs-4">
+                        <label>
+                            <input type="checkbox" ng-model="currentMajorRepair"  />
+                            Major repair or modification report required
+                        </label>
+                    </div>
+                    <div class="col-xs-4">
+                        <label>
+                            <input type="checkbox" ng-model="currentSDR" />
+                            SDR required
+                        </label>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12">
+                        <a class="btn btn-success" ng-click="addWorkCard()">Add work card</a>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-3">Discrepancy</th>
+                        <th class="col-md-4">Rectification</th>
+                        <th class="col-md-3">Options</th>
+                        <th class="col-md-1">Actions</th>
+                    </tr>                    
+                    <tr ng-repeat="workCard in workCards">
+                        <td><?= $model->isNewRecord ? '' : $model->number . '-'; ?>{{$index + 1}}</td>
+                        <td>{{workCard.discrepancy}}</td>
+                        <td>{{workCard.rectification}}</td>
+                        <td>
+                            <span ng-if="workCard.independent_check_required">Independent check required <br /></span>
+                            <span ng-if="workCard.modification_report_required">Major repair or modification report required <br /></span>
+                            <span ng-if="workCard.srd_required">SDR required</span>
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" title="Update">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a> 
+                            <a href="javascript:void(0);" title="Delete" ng-click="deleteWorkCard($index)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>      
+                </table>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
     <div class="row">
         <div class="panel panel-default">
@@ -114,23 +156,7 @@ $nullableBoolOptions = array('1' => 'Yes', '2' => 'No', '' => 'N/A');
     </div>
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><strong>Customer approval</strong></div>
-            <div class="panel-body">
-                <p>The Structural Aviation inc AMO does not take any responsibility about the planning of the maintenance
-                    accomplished on this aircraft or these parts. It will be the entire responsibility of the owner for witch
-                    task have to be accomplished. The AMO does only the requested maintenance tasks. No verification will
-                    be done for life limited parts, AD’s or anything else if they are not previously requested by the owner
-                    of the aircraft or part of it.  The customer gives up any legal appeal against the company or the owners.
-                    The company reserves the right to hold (retain) the plane or a part to pay the completed amount of the invoice.
-                    If the invoice is not paid in full after a period of three months, starting at the billing date, the aircraft or
-                    the componente becomes the proprety of  Structural Aviation. By signing this contract, the owner or his representative
-                    acceptes all conditions listed above.</p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>Work order accomplishement verification</strong></div>
+            <div class="panel-heading"><strong>Work order accomplishment verification</strong></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
